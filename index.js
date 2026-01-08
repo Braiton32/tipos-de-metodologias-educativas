@@ -4,8 +4,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const geoip = require('geoip-lite');
 const axios = require('axios');
-const TELEGRAM_TOKEN = '8202474930:AAH2Fjkbb48YI7iLbUIxrcOvJ-_Xqf-yF1k';
-const TELEGRAM_CHAT_ID = '8105636057';
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 app.set('trust proxy', true);
 
