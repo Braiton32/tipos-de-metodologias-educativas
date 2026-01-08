@@ -2,13 +2,21 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
+const geoip = require('geoip-lite');
 
 app.set('trust proxy', true);
 
 // Middleware para ver CUALQUIER petición que llegue
 app.use((req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    console.log(`>>> Solicitud recibida desde IP: ${ip} a las ${new Date().toLocaleTimeString()}`);
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    if (ip.includes(',')) ip = ip.split(',')[0].trim();
+
+    const geo = geoip.lookup(ip);
+
+    if (geo) {
+        console.log(`>>> EL VISITANTE ESTÁ EN: ${geo.city}, ${geo.country}`);
+        // geo.ll contiene [latitud, longitud] para ponerlo en un mapa
+    }
     next();
 });
 
